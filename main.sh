@@ -74,7 +74,7 @@ then
 else
 	touch current.txt
 fi
-#snapshot loop
+#snapshot loop for current.txt
 for i in $(find demo/*)
 do
 	name="$i"
@@ -94,12 +94,14 @@ do
 	echo "$name $ownername $ownerid $groupid $accessmd $datemod $sha1 $md5" >> current.txt
 done
 
+#read current state check if file exists in authen.txt if it doesnt then file has been created
 cat current.txt | while read line
 	do
 		name=`echo $line | awk '{print $1}'`
 		if ! grep -q "$name" authen.txt
 		then
 			echo "$name has been created"
+      #-o flag present
 			if [ -e "$outputFileName" ]
 			then
 				echo "$name has been created" >> $outputFileName
@@ -107,6 +109,7 @@ cat current.txt | while read line
 		fi
 	done
 
+#read authen state to compare file attributes against the current state to detect changes
 cat $authFileName | while read line
 	do
 		name=`echo $line | awk '{print $1}'`
@@ -136,8 +139,11 @@ cat $authFileName | while read line
 		fi
 	done
 
+#prompt user to confirm these changes were made by them
 read -p "do these changes look correct (y/n) " response
 
+#if yes current.txt = new auth file
+#no the system has been compromised
 case $response in
 	y)
 		cat current.txt > $authFileName
@@ -152,6 +158,7 @@ case $response in
 esac
 }
 
+#main loop
 while :
 do
   #menu
