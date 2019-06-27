@@ -3,6 +3,8 @@
 authFileName="authen.txt"
 outputFileName=""
 
+#-c flag will change authFileName variable to a user defined string
+#-o gives outputFileName variable a string and creates the file
 while getopts "c:o:" opt; do
   case $opt in
     o)
@@ -23,7 +25,7 @@ while getopts "c:o:" opt; do
   esac
 done
 
-
+#function shows user cirrent contents of the demo/ dir
 show() {
 	read -p "Do you want to see the contents of the directory (y/n) " usrInput
 	case $usrInput in
@@ -35,6 +37,7 @@ show() {
 esac
 }
 
+#create and initated authenitc state
 auth() {
 if [ ! -e "$authFileName" ]
 then
@@ -59,16 +62,19 @@ then
 fi
 }
 
+#prompt user to make changes then detect
 detect() {
 echo "make changes to demo/. press Enter when finished:"
 read _
 
+#create a new snapshot of file state. If there already is a file delete it
 if [ -e "current.txt" ]
 then
 	rm current.txt
 else
 	touch current.txt
 fi
+#snapshot loop
 for i in $(find demo/*)
 do
 	name="$i"
@@ -146,25 +152,28 @@ case $response in
 esac
 }
 
-
-
 while :
 do
+  #menu
 	echo "1: Run IDS"
 	echo "2: Exit"
 	if [ ! -d 'demo' ]
+  #directory setup
 	then
 		mkdir demo demo/dir1 demo/dir2 demo/dir3 &&
 		echo "demo file1" > demo/file1.txt &&
 		echo "demo file2" > demo/file2.txt &&
 		echo "demo file3" > demo/file3.txt
 	fi
+  #user response var and case statement
 	read usr_input
 	case $usr_input in
 	1)
+    #run functions
 		show
 		auth
 		detect
+    #handle optional output file
     if [ -e "$outputFileName" ]
     then
       echo "saving output to $outputFileName"
@@ -174,6 +183,7 @@ do
 		;;
 
 	2)
+    #Exit case
 		break
 		;;
 	esac
