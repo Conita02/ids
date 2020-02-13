@@ -1,11 +1,11 @@
 # IDS demo
 
-Intrusion Detection Software (IDS) demo to demonstrate basic bash scripting abilities
+Intrusion Detection Software (IDS) demo to demonstrate basic bash scripting abilities.
 
-main.sh creates:
+running main.sh creates:
 - demo/ directory
-- child directories and files within demo/
-- authen file for the inital system state
-- if -a flag is present authen file will be renamed by user
+- child directories and files within demo/ for demonstration
+- authen file for the inital file system state
+- if -a flag is present authen file name will be defined by user text following the -a flag
 - if -o flag is stated and output file is also created with the name following the -o flag
 
